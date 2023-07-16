@@ -50,6 +50,7 @@ func (l *Light) IsOn() bool {
 type Grid struct {
 	lights      [][]*Light
 	nOfLightsOn int
+	brightness  int
 }
 
 func NewGrid(size Coordinate) Grid {
@@ -70,12 +71,18 @@ func (g *Grid) LightsOn() int {
 	return g.nOfLightsOn
 }
 
+func (g *Grid) Brightness() int {
+	return g.brightness
+}
+
 func (g *Grid) TurnOn(from, to Coordinate) {
 	for x := from.X; x <= to.X; x++ {
 		for y := from.Y; y <= to.Y; y++ {
 			if switched := g.lights[x][y].TurnOn(); switched {
 				g.nOfLightsOn += 1
 			}
+
+			g.brightness += 1
 		}
 	}
 }
@@ -86,6 +93,8 @@ func (g *Grid) TurnOff(from, to Coordinate) {
 			if switched := g.lights[x][y].TurnOff(); switched {
 				g.nOfLightsOn -= 1
 			}
+
+			g.brightness -= 1
 		}
 	}
 }
@@ -101,6 +110,8 @@ func (g *Grid) Toggle(from, to Coordinate) {
 				l.TurnOn()
 				g.nOfLightsOn += 1
 			}
+
+			g.brightness += 2
 		}
 	}
 }
